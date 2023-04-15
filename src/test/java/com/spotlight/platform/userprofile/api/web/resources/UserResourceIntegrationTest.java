@@ -93,4 +93,21 @@ class UserResourceIntegrationTest {
             assertThat(response.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
-}
+    @Nested
+    @DisplayName("postUserProfile")
+    class PostUserProfile {
+        private static final String USER_ID_PATH_PARAM = "userId";
+        private static final String URL = "/users/{%s}/test".formatted(USER_ID_PATH_PARAM);
+        @Test
+        void add_user(ClientSupport client, UserProfileDao userProfileDao) {
+//TODO: check
+            when(userProfileDao.get(any(UserId.class))).thenReturn(Optional.of(UserProfileFixtures.NEW_USER_PROFILE));
+            var response = client.targetRest().path(URL)
+                            .resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.NON_EXISTING_USER_ID)
+                            .request().post(Entity.entity(UserProfileFixtures.NEW_USER_PROFILE, MediaType.APPLICATION_JSON));
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
+            assertThatJson(response.readEntity(UserProfile.class)).isEqualTo(UserProfileFixtures.NEW_SERIALIZED_USER_PROFILE);
+        }
+    }
+    }
