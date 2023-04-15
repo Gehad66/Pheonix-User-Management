@@ -1,0 +1,7 @@
+{
+  "userId": "existing-user-id",
+  "type": "REPLACE",
+  "properties": {
+    "currentGold": 500
+  }
+}
