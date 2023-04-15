@@ -6,11 +6,7 @@ import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/users/{userId}")
@@ -29,5 +25,12 @@ public class UserResource {
     @GET
     public UserProfile getUserProfile(@Valid @PathParam("userId") UserId userId) {
         return userProfileService.get(userId);
+    }
+    @Path("test")
+    @POST
+    @Consumes("application/json")
+    public UserProfile postUserProfile(UserProfile userProfile) {
+        userProfileService.put(userProfile);
+        return userProfileService.get(userProfile.userId());
     }
 }
