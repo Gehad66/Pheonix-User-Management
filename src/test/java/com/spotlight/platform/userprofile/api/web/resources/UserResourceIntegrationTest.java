@@ -3,13 +3,11 @@ package com.spotlight.platform.userprofile.api.web.resources;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-
 import com.spotlight.platform.userprofile.api.core.profile.persistence.UserProfileDao;
 import com.spotlight.platform.userprofile.api.model.profile.UserProfile;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures;
 import com.spotlight.platform.userprofile.api.web.UserProfileApiApplication;
-
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,18 +16,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-
-import java.util.Optional;
-
 import ru.vyarus.dropwizard.guice.test.ClientSupport;
 import ru.vyarus.dropwizard.guice.test.jupiter.ext.TestDropwizardAppExtension;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import java.util.Optional;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @Execution(ExecutionMode.SAME_THREAD)
 class UserResourceIntegrationTest {
@@ -96,4 +93,21 @@ class UserResourceIntegrationTest {
             assertThat(response.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
-}
+    @Nested
+    @DisplayName("postUserProfile")
+    class PostUserProfile {
+        private static final String USER_ID_PATH_PARAM = "userId";
+        private static final String URL = "/users/{%s}/test".formatted(USER_ID_PATH_PARAM);
+        @Test
+        void add_user(ClientSupport client, UserProfileDao userProfileDao) {
+//TODO: check
+            when(userProfileDao.get(any(UserId.class))).thenReturn(Optional.of(UserProfileFixtures.NEW_USER_PROFILE));
+            var response = client.targetRest().path(URL)
+                            .resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.NON_EXISTING_USER_ID)
+                            .request().post(Entity.entity(UserProfileFixtures.NEW_USER_PROFILE, MediaType.APPLICATION_JSON));
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
+            assertThatJson(response.readEntity(UserProfile.class)).isEqualTo(UserProfileFixtures.NEW_SERIALIZED_USER_PROFILE);
+        }
+    }
+    }
