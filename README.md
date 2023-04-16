@@ -137,6 +137,4 @@ java -jar ./build/libs/userprofile-api-1.0.0-SNAPSHOT.jar server
 
 ### How to make a request to a running application
 
-```shell
-curl http://localhost:8080/users/some-user-id/profile
-```
+[Postman_collection](e2e/postman)
