@@ -1,6 +1,7 @@
 package com.spotlight.platform.userprofile.api.web.resources;
 
 import com.spotlight.platform.userprofile.api.core.profile.UserProfileService;
+import com.spotlight.platform.userprofile.api.core.request.BatchOperationRequest;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperationFactory;
 import com.spotlight.platform.userprofile.api.model.profile.UserProfile;
@@ -12,6 +13,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Path("/profile")
@@ -31,17 +34,25 @@ public class ProfileResource {
         userProfileService.put(updatedUser);
         return userProfileService.get(userId);
     }
-    @Path("")
-    @POST
-    @Consumes("application/json")
-    public UserProfile postUserProfile(OperationRequest operationRequest) {
+    public UserProfile postSingleUserProfile(OperationRequest operationRequest) {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
         UserProfile user = userProfileService.get(operationRequest.userId());
         Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfileService
-                                    .get(operationRequest.userId()).userProfileProperties();
+                .get(operationRequest.userId()).userProfileProperties();
         Map<UserProfilePropertyName, UserProfilePropertyValue> result = operationFactory
                 .execute(operationRequest, oldProperties);
 
         return updateUserProfile(user.userId(),user.latestUpdateTime(),result);
+    }
+    @Path("")
+    @POST
+    @Consumes("application/json")
+    public List<UserProfile> postUserProfile(BatchOperationRequest batchOperationRequest) {
+        List<UserProfile> userProfiles = new ArrayList<UserProfile>();
+        List<OperationRequest> operationRequests = batchOperationRequest.batchOperation();
+        for(int i=0;i<operationRequests.size();i++){
+            userProfiles.add(postSingleUserProfile(operationRequests.get(i)));
+        }
+        return userProfiles;
     }
 }
