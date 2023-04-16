@@ -25,12 +25,13 @@ import ru.vyarus.dropwizard.guice.test.jupiter.ext.TestDropwizardAppExtension;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.*;
-import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ProfileResourceTest {
@@ -68,8 +69,8 @@ class ProfileResourceTest {
         private static final OperationRequest OPERATION_REQUEST = new OperationRequest(USER_ID,
                 OperationTypesEnum.REPLACE,
                 Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(300)));
-        private static List<OperationRequest> operationRequestList = new ArrayList<>(){{ add(OPERATION_REQUEST); }};
-        private static final BatchOperationRequest batchOperationRequest= new BatchOperationRequest(operationRequestList);
+        private static final List<OperationRequest> OPERATION_REQUEST_LIST = new ArrayList<>(){{ add(OPERATION_REQUEST); }};
+        private static final BatchOperationRequest batchOperationRequest= new BatchOperationRequest(OPERATION_REQUEST_LIST);
         @Test
         void userProfile_IncrementOperation_Success(ClientSupport client, UserProfileDao userProfileDao) {
 //TODO: check

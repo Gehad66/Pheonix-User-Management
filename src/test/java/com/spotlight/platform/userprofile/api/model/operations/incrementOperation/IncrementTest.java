@@ -1,30 +1,21 @@
 package com.spotlight.platform.userprofile.api.model.operations.incrementOperation;
 
-import com.spotlight.platform.helpers.FixtureHelpers;
 import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
 import com.spotlight.platform.userprofile.api.core.exceptions.OperationValidationException;
-import com.spotlight.platform.userprofile.api.core.profile.UserProfileService;
-import com.spotlight.platform.userprofile.api.core.profile.persistence.UserProfileDao;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperationFactory;
 import com.spotlight.platform.userprofile.api.model.profile.UserProfile;
-import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
-import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.LAST_UPDATE_TIMESTAMP;
 import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.USER_ID;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IncrementTest {
     UserProfile userProfile = new UserProfile(USER_ID, LAST_UPDATE_TIMESTAMP,
@@ -59,7 +50,6 @@ class IncrementTest {
         Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("non-existing"), UserProfilePropertyValue.valueOf(-10));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.INCREMENT, newProperties);
-        assertThrows(OperationValidationException.class, () -> {
-                operationFactory.execute(operationRequest, oldProperties);}  );
+        assertThrows(OperationValidationException.class, () -> operationFactory.execute(operationRequest, oldProperties));
     }
 }

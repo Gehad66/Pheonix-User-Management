@@ -1,23 +1,17 @@
 package com.spotlight.platform.userprofile.api.model.operations;
 
 import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
-import com.spotlight.platform.userprofile.api.core.enums.StatusEnum;
 import com.spotlight.platform.userprofile.api.core.exceptions.OperationValidationException;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
-import com.spotlight.platform.userprofile.api.core.request.OperationResponse;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.USER_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExecuteOperationFactoryTest {

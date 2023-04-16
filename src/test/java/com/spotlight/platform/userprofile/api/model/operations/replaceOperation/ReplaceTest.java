@@ -39,7 +39,6 @@ class ReplaceTest {
         Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("non-existing"), UserProfilePropertyValue.valueOf(-10));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.REPLACE, newProperties);
-        assertThrows(OperationValidationException.class, () -> {
-            operationFactory.execute(operationRequest, oldProperties);}  );
+        assertThrows(OperationValidationException.class, () -> operationFactory.execute(operationRequest, oldProperties));
     }
 }

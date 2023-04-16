@@ -1,11 +1,8 @@
 package com.spotlight.platform.userprofile.api.model.operations.replaceOperation;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
 import com.spotlight.platform.userprofile.api.core.exceptions.OperationValidationException;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
-import com.spotlight.platform.userprofile.api.core.request.OperationResponse;
 import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperation;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;

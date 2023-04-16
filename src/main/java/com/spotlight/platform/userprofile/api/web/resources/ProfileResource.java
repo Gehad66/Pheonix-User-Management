@@ -44,14 +44,13 @@ public class ProfileResource {
 
         return updateUserProfile(user.userId(),user.latestUpdateTime(),result);
     }
-    @Path("")
     @POST
     @Consumes("application/json")
     public List<UserProfile> postUserProfile(BatchOperationRequest batchOperationRequest) {
-        List<UserProfile> userProfiles = new ArrayList<UserProfile>();
+        List<UserProfile> userProfiles = new ArrayList<>();
         List<OperationRequest> operationRequests = batchOperationRequest.batchOperation();
-        for(int i=0;i<operationRequests.size();i++){
-            userProfiles.add(postSingleUserProfile(operationRequests.get(i)));
+        for (OperationRequest operationRequest : operationRequests) {
+            userProfiles.add(postSingleUserProfile(operationRequest));
         }
         return userProfiles;
     }
