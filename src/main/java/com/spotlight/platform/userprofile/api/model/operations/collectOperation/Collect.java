@@ -18,7 +18,6 @@ public class Collect implements ExecuteOperation {
 
     ArrayList mergeArrayList(ArrayNode currentList, ArrayNode newList){
         ArrayNode outputList = currentList;
-//        .add(newList);
         for (int i=0;i<newList.size();i++){
             outputList.add(newList.get(i).asText());
         }
