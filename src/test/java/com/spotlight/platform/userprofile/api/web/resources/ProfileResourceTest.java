@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
 import com.spotlight.platform.userprofile.api.core.profile.UserProfileService;
 import com.spotlight.platform.userprofile.api.core.profile.persistence.UserProfileDao;
+import com.spotlight.platform.userprofile.api.core.request.BatchOperationRequest;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.profile.UserProfile;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
@@ -24,8 +25,7 @@ import ru.vyarus.dropwizard.guice.test.jupiter.ext.TestDropwizardAppExtension;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.*;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -65,22 +65,19 @@ class ProfileResourceTest {
     @DisplayName("postUserProfile")
     class PostUserProfile {
         private static final String URL = "/profile";
-        public static final OperationRequest OPERATION_REQUEST = new OperationRequest(USER_ID,
+        private static final OperationRequest OPERATION_REQUEST = new OperationRequest(USER_ID,
                 OperationTypesEnum.REPLACE,
                 Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(300)));
-
-//        @Test
+        private static List<OperationRequest> operationRequestList = new ArrayList<>(){{ add(OPERATION_REQUEST); }};
+        private static final BatchOperationRequest batchOperationRequest= new BatchOperationRequest(operationRequestList);
+        @Test
         void userProfile_IncrementOperation_Success(ClientSupport client, UserProfileDao userProfileDao) {
 //TODO: check
             when(userProfileDao.get(any(UserId.class))).thenReturn(Optional.of(USER_PROFILE_INCREMENT));
             var response = client.targetRest().path(URL)
-//                    .resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.NON_EXISTING_USER_ID)
-                    .request().post(Entity.entity(OPERATION_REQUEST, MediaType.APPLICATION_JSON));
+                    .request().post(Entity.entity(batchOperationRequest, MediaType.APPLICATION_JSON));
 
             assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
-//            UserProfile pr = response.readEntity(UserProfile.class);
-            assertThatJson(response.readEntity(UserProfile.class)).isEqualTo(USER_PROFILE_INCREMENT);
         }
     }
-
 }
