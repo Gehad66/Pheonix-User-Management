@@ -9,27 +9,6 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "get users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/users/existing/profile",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"existing",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "add user",
 					"request": {
 						"method": "POST",
@@ -44,14 +23,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/users/existing/test",
+							"raw": "{{URL}}/users/existing",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"existing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/existing/profile",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"users",
 								"existing",
-								"test"
+								"profile"
 							]
 						}
 					},
@@ -66,13 +63,39 @@
 					"name": "Increment",
 					"item": [
 						{
-							"name": "2 attributes",
+							"name": "single request",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"existing\",\n  \"type\": \"INCREMENT\",\n  \"properties\": {\n    \"battleFought\": 10,\n    \"questsNotCompleted\": -1\n  }\n}",
+									"raw": "{ \"batchOperation\": [\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"questsNotCompleted\": -1\n                }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/profile",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "batch request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"batchOperation\": [\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"currentGold\": -1\n                }\n        },\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"currentGems\": 10,\n                \"questsNotCompleted\": -1\n                }\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -98,7 +121,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"existing\",\n  \"type\": \"INCREMENT\",\n  \"properties\": {\n    \"battleFought\": 10,\n    \"questsNotCompleted\": -1,\n    \"non-existing\": 4\n  }\n}",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"INCREMENT\",\n        \"properties\": {\n            \"battleFought\": 10,\n            \"questsNotCompleted\": -1,\n            \"non-existing\": 4\n        }\n    }\n]}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -123,13 +146,39 @@
 					"name": "Collect",
 					"item": [
 						{
-							"name": "2 attributes",
+							"name": "single request",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"existing\",\n  \"type\": \"collect\",\n  \"properties\": {\n    \"inventory\": [\"sword1\", \"sword2\", \"shield1\"],\n    \"tools\": [\"tool3\", \"tool4\"]\n  }\n}",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword3\", \"sword4\", \"shield2\"],\n            \"tools\": [\"tool3\", \"tool4\"]\n        }\n    }\n]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/profile",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "batch request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword5\", \"sword6\", \"shield3\"],\n            \"tools\": [\"tool5\", \"tool6\"]\n        }\n    },\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword7\", \"sword8\", \"shield4\"],\n            \"tools\": [\"tool7\", \"tool8\"]\n        }\n    }\n]}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -155,7 +204,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"existing\",\n  \"type\": \"collect\",\n  \"properties\": {\n    \"inventory\": [\"sword1\", \"sword2\", \"shield1\"],\n    \"tools\": [\"tool1\", \"tool2\"]\n  }\n}",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"non-existing\": [\"sword1\", \"sword2\", \"shield1\"],\n            \"tools\": [\"tool1\", \"tool2\"]\n        }\n    }\n]}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -180,13 +229,39 @@
 					"name": "Replace",
 					"item": [
 						{
-							"name": "2 attributes",
+							"name": "single request",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"existing\",\n  \"type\": \"replace\",\n  \"properties\": {\n    \"currentGold\": 500,\n    \"currentGems\": 800\n  }\n}",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"replace\",\n        \"properties\": {\n            \"currentGold\": 500,\n            \"currentGems\": 800\n        }\n    }\n]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/profile",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "batch request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"replace\",\n        \"properties\": {\n            \"currentGold\": 500,\n            \"currentGems\": 800\n        }\n    },\n    {\n        \"userId\": \"existing\",\n        \"type\": \"replace\",\n        \"properties\": {\n            \"currentGold\": 600,\n            \"currentGems\": 600\n        }\n    }\n]}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -212,7 +287,38 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"existing\",\n  \"type\": \"replace\",\n  \"properties\": {\n    \"currentGold\": 500,\n    \"currentGems\": 800\n  }\n}",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"replace\",\n        \"properties\": {\n            \"currentGold\": 500,\n            \"non-existing\": 4\n        }\n    }\n]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/profile",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Hybrid",
+					"item": [
+						{
+							"name": "batch request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"batchOperation\": [\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"currentGold\": -1\n                }\n        },\n        {\n            \"userId\": \"existing\",\n            \"type\": \"REPLACE\",\n            \"properties\": {\n                \"currentGems\": 500,\n                \"questsNotCompleted\": 500\n                }\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
