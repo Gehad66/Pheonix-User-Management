@@ -97,9 +97,9 @@ class UserResourceIntegrationTest {
     @DisplayName("postUserProfile")
     class PostUserProfile {
         private static final String USER_ID_PATH_PARAM = "userId";
-        private static final String URL = "/users/{%s}/test".formatted(USER_ID_PATH_PARAM);
+        private static final String URL = "/users/{%s}".formatted(USER_ID_PATH_PARAM);
         @Test
-        void add_user(ClientSupport client, UserProfileDao userProfileDao) {
+        void addUser_Success(ClientSupport client, UserProfileDao userProfileDao) {
 //TODO: check
             when(userProfileDao.get(any(UserId.class))).thenReturn(Optional.of(UserProfileFixtures.NEW_USER_PROFILE));
             var response = client.targetRest().path(URL)

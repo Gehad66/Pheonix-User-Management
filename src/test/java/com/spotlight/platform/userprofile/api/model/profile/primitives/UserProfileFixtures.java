@@ -17,7 +17,8 @@ public class UserProfileFixtures {
             Map.of(UserProfilePropertyName.valueOf("property1"), UserProfilePropertyValue.valueOf("property1Value")));
     public static final UserProfile NEW_USER_PROFILE = new UserProfile(NON_EXISTING_USER_ID, LAST_UPDATE_TIMESTAMP,
             Map.of(UserProfilePropertyName.valueOf("property1"), UserProfilePropertyValue.valueOf("property1Value")));
-
+    public static final UserProfile USER_PROFILE_INCREMENT = new UserProfile(USER_ID, LAST_UPDATE_TIMESTAMP,
+            Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(100)));
     public static final String SERIALIZED_USER_PROFILE = FixtureHelpers.fixture("/fixtures/model/profile/userProfile.json");
     public static final String NEW_SERIALIZED_USER_PROFILE = FixtureHelpers.fixture("/fixtures/model/profile/newUserProfile.json");
 
