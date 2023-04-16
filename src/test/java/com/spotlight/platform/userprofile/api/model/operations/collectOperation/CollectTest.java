@@ -17,13 +17,14 @@ import java.util.Map;
 import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.LAST_UPDATE_TIMESTAMP;
 import static com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfileFixtures.USER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CollectTest {
 
     UserProfile userProfile = new UserProfile(USER_ID, LAST_UPDATE_TIMESTAMP,
-            new UserProfilePropertyMap(Map.of(UserProfilePropertyName.valueOf("inventory"), UserProfilePropertyValue.valueOf(new String[] {"inventory", "inventory2"}),
-                UserProfilePropertyName.valueOf("tools"), UserProfilePropertyValue.valueOf(new String[] {"tools", "tools2"}))));
+            new UserProfilePropertyMap(
+                    new HashMap<>(Map.of(UserProfilePropertyName.valueOf("inventory"), UserProfilePropertyValue.valueOf(new String[] {"inventory", "inventory2"}),
+                UserProfilePropertyName.valueOf("tools"), UserProfilePropertyValue.valueOf(new String[] {"tools", "tools2"})))));
     UserProfilePropertyName castString(String property){
         return UserProfilePropertyName.valueOf(property);
     }

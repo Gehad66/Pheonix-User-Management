@@ -4,6 +4,7 @@ import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
 import com.spotlight.platform.userprofile.api.core.exceptions.OperationValidationException;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyMap;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ class ExecuteOperationFactoryTest {
     public static final UserId USER_ID = UserId.valueOf("existing-user-id");
     public static final OperationTypesEnum TYPE = OperationTypesEnum.REPLACE;
     public static final OperationRequest OPERATION_REQUEST = new OperationRequest(USER_ID, TYPE,
-            Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500)));
+            new UserProfilePropertyMap(Map.of(UserProfilePropertyName.valueOf("currentGold"),
+                    UserProfilePropertyValue.valueOf(500))));
 
     //TODO
     @Test
@@ -28,7 +30,8 @@ class ExecuteOperationFactoryTest {
     @Test
     void increment_Operation_Request() {
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.INCREMENT,
-                Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500)));
+                new UserProfilePropertyMap(
+                Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500))));
 //        Assertions.assertNull(new ExecuteOperationFactory().execute(operationRequest));
     }
     @Test
@@ -37,23 +40,25 @@ class ExecuteOperationFactoryTest {
                 "sword2",
                 "sword3"));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.COLLECT,
-                Map.of(UserProfilePropertyName.valueOf("inventory"), UserProfilePropertyValue.valueOf(arrayInventory)));
+                new UserProfilePropertyMap(
+                Map.of(UserProfilePropertyName.valueOf("inventory"), UserProfilePropertyValue.valueOf(arrayInventory))));
 //        Assertions.assertNull(new ExecuteOperationFactory().execute(operationRequest));
     }
     @Test
     void invalid_Operation_Request_Type() {
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.valueOf("multiply"),
-                    Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500)));
+                    new UserProfilePropertyMap(
+                    Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500))));
         });
     }
     @Test
     void unsupported_Operation_Request_Type() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        UserProfilePropertyMap oldProperties =
-                Map.of(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(100));
-        UserProfilePropertyMap newProperties =
-                Map.of(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(500));
+        UserProfilePropertyMap oldProperties = new UserProfilePropertyMap(
+                Map.of(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(100)));
+        UserProfilePropertyMap newProperties = new UserProfilePropertyMap(
+                Map.of(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(500)));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.OTHERS, newProperties);
         assertThrows(OperationValidationException.class, () -> {
             operationFactory.execute(operationRequest, oldProperties);}  );
