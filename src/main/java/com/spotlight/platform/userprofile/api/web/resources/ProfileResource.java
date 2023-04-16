@@ -1,6 +1,5 @@
 package com.spotlight.platform.userprofile.api.web.resources;
 
-import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
 import com.spotlight.platform.userprofile.api.core.profile.UserProfileService;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperationFactory;
@@ -10,10 +9,9 @@ import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfi
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.Map;
 
 @Path("/profile")
@@ -28,7 +26,11 @@ public class ProfileResource {
         this.userProfileService = userProfileService;
     }
 
-    
+    UserProfile updateUserProfile(UserId userId, Instant instant, Map<UserProfilePropertyName, UserProfilePropertyValue> result){
+        UserProfile updatedUser = new UserProfile(userId,instant,result);
+        userProfileService.put(updatedUser);
+        return userProfileService.get(userId);
+    }
     @Path("")
     @POST
     @Consumes("application/json")
@@ -37,9 +39,9 @@ public class ProfileResource {
         UserProfile user = userProfileService.get(operationRequest.userId());
         Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfileService
                                     .get(operationRequest.userId()).userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> result =operationFactory.execute(operationRequest, oldProperties);
-        UserProfile updatedUser = new UserProfile(user.userId(),user.latestUpdateTime(),result);
-        userProfileService.put(updatedUser);
-        return userProfileService.get(operationRequest.userId());
+        Map<UserProfilePropertyName, UserProfilePropertyValue> result = operationFactory
+                .execute(operationRequest, oldProperties);
+
+        return updateUserProfile(user.userId(),user.latestUpdateTime(),result);
     }
 }
