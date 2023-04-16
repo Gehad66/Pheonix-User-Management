@@ -24,8 +24,8 @@ class IncrementTest {
     @Test
     void increment_valid() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfile.userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
+        UserProfilePropertyMap oldProperties = userProfile.userProfileProperties();
+        UserProfilePropertyMap newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(500));
         newProperties.put(UserProfilePropertyName.valueOf("questsNotCompleted"), UserProfilePropertyValue.valueOf(2));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.INCREMENT, newProperties);
@@ -36,8 +36,8 @@ class IncrementTest {
     @Test
     void decrement_valid() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfile.userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
+        UserProfilePropertyMap oldProperties = userProfile.userProfileProperties();
+        UserProfilePropertyMap newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(-10));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.INCREMENT, newProperties);
         UserProfilePropertyValue result = operationFactory.execute(operationRequest, oldProperties).get(UserProfilePropertyName.valueOf("battleFought"));
@@ -46,8 +46,8 @@ class IncrementTest {
     @Test
     void non_existing_user_property() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfile.userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
+        UserProfilePropertyMap oldProperties = userProfile.userProfileProperties();
+        UserProfilePropertyMap newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("non-existing"), UserProfilePropertyValue.valueOf(-10));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.INCREMENT, newProperties);
         assertThrows(OperationValidationException.class, () -> operationFactory.execute(operationRequest, oldProperties));

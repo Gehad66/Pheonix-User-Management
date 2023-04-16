@@ -6,6 +6,7 @@ import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperationFactory;
 import com.spotlight.platform.userprofile.api.model.profile.UserProfile;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyMap;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 
@@ -29,7 +30,7 @@ public class ProfileResource {
         this.userProfileService = userProfileService;
     }
 
-    UserProfile updateUserProfile(UserId userId, Instant instant, Map<UserProfilePropertyName, UserProfilePropertyValue> result){
+    UserProfile updateUserProfile(UserId userId, Instant instant, UserProfilePropertyMap result){
         UserProfile updatedUser = new UserProfile(userId,instant,result);
         userProfileService.put(updatedUser);
         return userProfileService.get(userId);
@@ -37,9 +38,9 @@ public class ProfileResource {
     public UserProfile postSingleUserProfile(OperationRequest operationRequest) {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
         UserProfile user = userProfileService.get(operationRequest.userId());
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfileService
+        UserProfilePropertyMap oldProperties = userProfileService
                 .get(operationRequest.userId()).userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> result = operationFactory
+        UserProfilePropertyMap result = operationFactory
                 .execute(operationRequest, oldProperties);
 
         return updateUserProfile(user.userId(),user.latestUpdateTime(),result);

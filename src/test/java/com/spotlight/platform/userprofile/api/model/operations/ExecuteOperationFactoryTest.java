@@ -50,9 +50,9 @@ class ExecuteOperationFactoryTest {
     @Test
     void unsupported_Operation_Request_Type() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties =
+        UserProfilePropertyMap oldProperties =
                 Map.of(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(100));
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties =
+        UserProfilePropertyMap newProperties =
                 Map.of(UserProfilePropertyName.valueOf("battleFought"), UserProfilePropertyValue.valueOf(500));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.OTHERS, newProperties);
         assertThrows(OperationValidationException.class, () -> {

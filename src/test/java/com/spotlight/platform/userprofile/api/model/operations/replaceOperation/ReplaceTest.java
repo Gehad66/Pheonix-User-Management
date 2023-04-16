@@ -24,8 +24,8 @@ class ReplaceTest {
     @Test
     void replace_valid() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfile.userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
+        UserProfilePropertyMap oldProperties = userProfile.userProfileProperties();
+        UserProfilePropertyMap newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500));
         newProperties.put(UserProfilePropertyName.valueOf("currentGems"), UserProfilePropertyValue.valueOf(2));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.REPLACE, newProperties);
@@ -35,8 +35,8 @@ class ReplaceTest {
     @Test
     void non_existing_user_property() {
         ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties = userProfile.userProfileProperties();
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>();
+        UserProfilePropertyMap oldProperties = userProfile.userProfileProperties();
+        UserProfilePropertyMap newProperties = new HashMap<>();
         newProperties.put(UserProfilePropertyName.valueOf("non-existing"), UserProfilePropertyValue.valueOf(-10));
         OperationRequest operationRequest = new OperationRequest(USER_ID, OperationTypesEnum.REPLACE, newProperties);
         assertThrows(OperationValidationException.class, () -> operationFactory.execute(operationRequest, oldProperties));

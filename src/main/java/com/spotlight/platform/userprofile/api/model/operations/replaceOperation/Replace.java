@@ -4,6 +4,7 @@ import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
 import com.spotlight.platform.userprofile.api.core.exceptions.OperationValidationException;
 import com.spotlight.platform.userprofile.api.core.request.OperationRequest;
 import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperation;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyMap;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 
@@ -12,13 +13,13 @@ import java.util.Map;
 
 public class Replace implements ExecuteOperation {
     @Override
-    public Map<UserProfilePropertyName, UserProfilePropertyValue> execute(OperationRequest operationRequest, Map<UserProfilePropertyName, UserProfilePropertyValue> oldProperties) {
-        Map<UserProfilePropertyName, UserProfilePropertyValue> newProperties = new HashMap<>(oldProperties);
+    public UserProfilePropertyMap execute(OperationRequest operationRequest, UserProfilePropertyMap oldProperties) {
+        UserProfilePropertyMap newProperties = new UserProfilePropertyMap(oldProperties.userProfileProperties);
 
-        for (Map.Entry<UserProfilePropertyName,UserProfilePropertyValue> entry : operationRequest.properties().entrySet()){
+        for (Map.Entry<UserProfilePropertyName,UserProfilePropertyValue> entry : operationRequest.properties().userProfileProperties.entrySet()){
             UserProfilePropertyName key = entry.getKey();
-            if(newProperties.containsKey(key) ){
-                newProperties.put(key, entry.getValue());
+            if(newProperties.userProfileProperties.containsKey(key) ){
+                newProperties.userProfileProperties.put(key, entry.getValue());
             }
             else{
                 throw new OperationValidationException(OperationTypesEnum.REPLACE, "User property object not found");
