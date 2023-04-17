@@ -12,7 +12,6 @@ import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfi
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Collect implements ExecuteOperation {
@@ -27,16 +26,15 @@ public class Collect implements ExecuteOperation {
     @Override
     public UserProfilePropertyMap execute(OperationRequest operationRequest, UserProfilePropertyMap oldProperties) {
         UserProfilePropertyMap newProperties = new UserProfilePropertyMap(oldProperties.userProfileProperties);
-//        TODO check new
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNodeNew = mapper.valueToTree(oldProperties);
+        JsonNode jsonNodeCurrent = mapper.valueToTree(oldProperties);
         JsonNode jsonNodeRequested = mapper.valueToTree(operationRequest.properties());
 
         for (Map.Entry<UserProfilePropertyName,UserProfilePropertyValue> entry : operationRequest.properties().userProfileProperties.entrySet()){
             UserProfilePropertyName key = entry.getKey();
             if(newProperties.userProfileProperties.containsKey(key) ){
                 ArrayList mergedArray = mergeArrayList(
-                        (ArrayNode) jsonNodeNew.get(key.toString()),
+                        (ArrayNode) jsonNodeCurrent.get(key.toString()),
                         (ArrayNode) jsonNodeRequested.get(key.toString())
                                 );
 

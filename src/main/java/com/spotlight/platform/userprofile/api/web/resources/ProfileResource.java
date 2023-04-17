@@ -7,14 +7,16 @@ import com.spotlight.platform.userprofile.api.model.operations.ExecuteOperationF
 import com.spotlight.platform.userprofile.api.model.profile.UserProfile;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
 import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyMap;
-import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
-import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,35 +26,21 @@ import java.util.Map;
 public class ProfileResource {
 
     private final UserProfileService userProfileService;
+    private ProfileUtils profileUtils;
 
     @Inject
     public ProfileResource(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
+        this.profileUtils = new ProfileUtils(userProfileService);
     }
 
-    UserProfile updateUserProfile(UserId userId, Instant instant, UserProfilePropertyMap result){
-        UserProfile updatedUser = new UserProfile(userId,instant,result);
-        userProfileService.put(updatedUser);
-        return userProfileService.get(userId);
-    }
-    public UserProfile postSingleUserProfile(OperationRequest operationRequest) {
-        ExecuteOperationFactory operationFactory = new ExecuteOperationFactory();
-        UserProfile user = userProfileService.get(operationRequest.userId());
-        UserProfilePropertyMap oldProperties = userProfileService
-                .get(operationRequest.userId()).userProfileProperties();
-        UserProfilePropertyMap result = operationFactory
-                .execute(operationRequest, oldProperties);
-
-        return updateUserProfile(user.userId(),user.latestUpdateTime(),result);
-    }
     @POST
     @Consumes("application/json")
     public List<UserProfile> postUserProfile(BatchOperationRequest batchOperationRequest) {
-        List<UserProfile> userProfiles = new ArrayList<>();
         List<OperationRequest> operationRequests = batchOperationRequest.batchOperation();
         for (OperationRequest operationRequest : operationRequests) {
-            userProfiles.add(postSingleUserProfile(operationRequest));
+            profileUtils.postSingleUserProfile(operationRequest);
         }
-        return userProfiles;
+        return profileUtils.getUpdatedUsersList(operationRequests);
     }
 }
