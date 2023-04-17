@@ -24,6 +24,7 @@ public class UserProfileFixtures {
             new UserProfilePropertyMap( new HashMap<>(
             Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(100)))));
     public static final String SERIALIZED_USER_PROFILE = FixtureHelpers.fixture("/fixtures/model/profile/userProfile.json");
-    public static final String NEW_SERIALIZED_USER_PROFILE = FixtureHelpers.fixture("/fixtures/model/profile/newUserProfile.json");
+    public static final String SERIALIZED_NEW_USER_PROFILE = FixtureHelpers.fixture("/fixtures/model/profile/newUserProfile.json");
+    public static final String SERIALIZED_USER_INCREMENT_PROFILE = FixtureHelpers.fixture("/fixtures/model/profile/incrementUserProfile.json");
 
 }
