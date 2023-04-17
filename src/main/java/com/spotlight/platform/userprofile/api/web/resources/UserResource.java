@@ -26,7 +26,7 @@ public class UserResource {
     public UserProfile getUserProfile(@Valid @PathParam("userId") UserId userId) {
         return userProfileService.get(userId);
     }
-    @Path("test")
+    @Path("/")
     @POST
     @Consumes("application/json")
     public UserProfile postUserProfile(UserProfile userProfile) {

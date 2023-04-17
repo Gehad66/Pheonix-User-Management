@@ -136,7 +136,8 @@ java -jar ./build/libs/userprofile-api-1.0.0-SNAPSHOT.jar server
 ```
 
 ### How to make a request to a running application
+* Please use the postman collection to test.
+* Run the whole collection or make sure the 2 "add new user" endpoints are executed first
+* Batch requests are supported
 
-```shell
-curl http://localhost:8080/users/some-user-id/profile
-```
+[Postman_collection](e2e/postman)

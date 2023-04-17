@@ -2,7 +2,10 @@ package com.spotlight.platform.userprofile.api.core.request;
 
 import com.spotlight.platform.helpers.FixtureHelpers;
 import com.spotlight.platform.userprofile.api.core.enums.OperationTypesEnum;
-import com.spotlight.platform.userprofile.api.model.profile.primitives.*;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserId;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyMap;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyName;
+import com.spotlight.platform.userprofile.api.model.profile.primitives.UserProfilePropertyValue;
 
 import java.util.Map;
 
@@ -14,7 +17,8 @@ public class OperationRequestFixture {
     public static final OperationTypesEnum TYPE = OperationTypesEnum.valueOf("REPLACE");
 
     public static final OperationRequest OPERATION_REQUEST = new OperationRequest(USER_ID, TYPE,
-            Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500)));
+            new UserProfilePropertyMap(
+            Map.of(UserProfilePropertyName.valueOf("currentGold"), UserProfilePropertyValue.valueOf(500))));
 
     public static final String SERIALIZED_OPERATION_REQUEST = FixtureHelpers.fixture("/fixtures/core/request/operationRequest.json");
 

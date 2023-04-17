@@ -85,8 +85,8 @@ class UserResourceIntegrationTest {
         }
 
         @Test
-        void unhandledExceptionOccured_returns500(ClientSupport client, UserProfileDao userProfileDao) {
-            when(userProfileDao.get(any(UserId.class))).thenThrow(new RuntimeException("Some unhandled exception"));
+        void unhandledExceptionOccurred_returns500(ClientSupport client, UserProfileDao userProfileDao) {
+                when(userProfileDao.get(any(UserId.class))).thenThrow(new RuntimeException("Some unhandled exception"));
 
             var response = client.targetRest().path(URL).resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.USER_ID).request().get();
 
@@ -94,20 +94,28 @@ class UserResourceIntegrationTest {
         }
     }
     @Nested
-    @DisplayName("postUserProfile")
+    @DisplayName("newUserProfile")
     class PostUserProfile {
         private static final String USER_ID_PATH_PARAM = "userId";
-        private static final String URL = "/users/{%s}/test".formatted(USER_ID_PATH_PARAM);
+        private static final String URL = "/users/{%s}".formatted(USER_ID_PATH_PARAM);
         @Test
-        void add_user(ClientSupport client, UserProfileDao userProfileDao) {
-//TODO: check
+        void newUserPostRequest_Success(ClientSupport client, UserProfileDao userProfileDao) {
             when(userProfileDao.get(any(UserId.class))).thenReturn(Optional.of(UserProfileFixtures.NEW_USER_PROFILE));
             var response = client.targetRest().path(URL)
-                            .resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.NON_EXISTING_USER_ID)
+                            .resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.USER_ID)
                             .request().post(Entity.entity(UserProfileFixtures.NEW_USER_PROFILE, MediaType.APPLICATION_JSON));
 
             assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
-            assertThatJson(response.readEntity(UserProfile.class)).isEqualTo(UserProfileFixtures.NEW_SERIALIZED_USER_PROFILE);
+            assertThatJson(response.readEntity(UserProfile.class)).isEqualTo(UserProfileFixtures.SERIALIZED_NEW_USER_PROFILE);
+        }
+        @Test
+        void addUserUnhandledExceptionOccurred_returns500(ClientSupport client, UserProfileDao userProfileDao) {
+            when(userProfileDao.get(any(UserId.class))).thenThrow(new RuntimeException("Some unhandled exception"));
+            var response = client.targetRest().path(URL)
+                    .resolveTemplate(USER_ID_PATH_PARAM, UserProfileFixtures.USER_ID)
+                    .request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
     }
