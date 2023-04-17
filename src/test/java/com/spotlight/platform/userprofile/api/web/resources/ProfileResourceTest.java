@@ -72,13 +72,11 @@ class ProfileResourceTest {
 
         @Test
         void operationValidationException_returns500(ClientSupport client, UserProfileDao userProfileDao) {
-            when(userProfileDao.get(any(UserId.class))).thenThrow(new RuntimeException("Some unhandled exception"));
-//                    new OperationValidationException(OperationTypesEnum.INCREMENT, "Some unhandled exception"));
+            when(userProfileDao.get(any(UserId.class))).thenThrow(
+                    new OperationValidationException(OperationTypesEnum.INCREMENT, "Some unhandled exception"));
             var response = client.targetRest().path(URL)
                     .request().post(Entity.entity(batchOperationRequest, MediaType.APPLICATION_JSON));
-            System.out.println("##############");
-            System.out.println(response.getStatus());
-            System.out.println(response.readEntity(String.class));
+
             assertThat(response.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
