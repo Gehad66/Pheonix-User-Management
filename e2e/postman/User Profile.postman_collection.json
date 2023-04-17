@@ -36,6 +36,33 @@
 					"response": []
 				},
 				{
+					"name": "add user 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"existing2\",\n    \"latestUpdateTime\": \"2021-06-01T09:16:36.123Z\",\n    \"userProfileProperties\": {\n        \"currentGold\": 100,\n        \"currentGems\": 1,\n        \"battleFought\": 10,\n        \"questsNotCompleted\": -1,\n        \"inventory\": [\"sword1\", \"sword2\", \"shield1\"],\n        \"tools\": [\"tool1\", \"tool2\"]  \n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/existing2",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"existing2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get users",
 					"request": {
 						"method": "GET",
@@ -95,7 +122,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{ \"batchOperation\": [\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"currentGold\": -1\n                }\n        },\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"currentGems\": 10,\n                \"questsNotCompleted\": -1\n                }\n        }\n    ]\n}",
+									"raw": "{ \"batchOperation\": [\n        {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"currentGold\": -1\n                }\n        },\n         {\n            \"userId\": \"existing\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"currentGold\": -1\n                }\n        },\n         {\n            \"userId\": \"existing2\",\n            \"type\": \"INCREMENT\",\n            \"properties\": {\n                \"battleFought\": 10,\n                \"currentGold\": -1\n                }\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -178,7 +205,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword5\", \"sword6\", \"shield3\"],\n            \"tools\": [\"tool5\", \"tool6\"]\n        }\n    },\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword7\", \"sword8\", \"shield4\"],\n            \"tools\": [\"tool7\", \"tool8\"]\n        }\n    }\n]}",
+									"raw": "{ \"batchOperation\": [\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword5\", \"sword6\", \"shield3\"],\n            \"tools\": [\"tool5\", \"tool6\"]\n        }\n    },\n    {\n        \"userId\": \"existing\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword7\", \"sword8\", \"shield4\"],\n            \"tools\": [\"tool7\", \"tool8\"]\n        }\n    },\n    {\n        \"userId\": \"existing2\",\n        \"type\": \"collect\",\n        \"properties\": {\n            \"inventory\": [\"sword3\", \"sword4\", \"shield2\"],\n            \"tools\": [\"tool3\", \"tool4\"]\n        }\n    }\n]}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -365,6 +392,26 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
